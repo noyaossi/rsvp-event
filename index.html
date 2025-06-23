@@ -2,113 +2,47 @@
 <html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>אישור הגעה</title>
-  <style>
-    body {
-      font-family: "Segoe UI", Tahoma, sans-serif;
-      background: #f4f4f4;
-      color: #333;
-      max-width: 500px;
-      margin: 50px auto;
-      padding: 20px;
-      border-radius: 10px;
-      background-color: white;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    h1 {
-      text-align: center;
-      color: #4CAF50;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 15px;
-      font-size: 1.1em;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 10px;
-      font-size: 1em;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      box-sizing: border-box;
-    }
-
-    button {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      font-size: 1.1em;
-      cursor: pointer;
-      border-radius: 6px;
-      margin-top: 20px;
-      width: 100%;
-    }
-
-    button:hover {
-      background-color: #45a049;
-    }
-
-    #response {
-      margin-top: 20px;
-      font-weight: bold;
-      color: #4CAF50;
-      text-align: center;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>אישור הגעה לחתונה</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>אישור הגעה לאירוע</h1>
-  <form id="rsvpForm">
-    <label>
-      שם מלא:
-      <input type="text" name="name" required>
-    </label>
+  <div class="container">
+    <div class="header">
+      <div class="heart-icon">💕</div>
+      <h1>אישור הגעה לחינה</h1>
+      <p class="couple-names">נויה & בן</p>
+      <p class="date">26.08.2025</p>
+    </div>
 
-    <label>
-      האם תוכל/י להגיע?
-      <select name="confirmed" required>
-        <option value="">בחרי תשובה</option>
-        <option value="true">כן</option>
-        <option value="false">לא</option>
-      </select>
-    </label>
+    <form id="rsvpForm">
+      <div class="form-group">
+        <label for="name">שם מלא:</label>
+        <input type="text" id="name" name="name" required>
+      </div>
 
-    <label>
-      כמה אנשים מגיעים (כולל אותך)?
-      <input type="number" name="numberOfGuests" min="1" required>
-    </label>
+      <div class="form-group">
+        <label for="confirmed">האם תגיע/י?</label>
+        <select id="confirmed" name="confirmed" required>
+          <option value="">בחר תשובה</option>
+          <option value="true">✅ כן, אגיע בשמחה!</option>
+          <option value="false">❌ לא אוכל להגיע</option>
+        </select>
+      </div>
 
-    <button type="submit">שליחה</button>
-  </form>
+      <div class="form-group" id="guestsGroup" style="display: none;">
+        <label for="numberOfGuests">כמה אנשים (כולל אותך)?</label>
+        <input type="number" id="numberOfGuests" name="numberOfGuests" min="1" max="8">
+      </div>
 
-  <p id="response"></p>
+      <button type="submit" class="submit-btn">שלח אישור</button>
+    </form>
 
-  <script>
-    const form = document.getElementById('rsvpForm');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    <div id="response" class="response"></div>
+  </div>
 
-      const data = {
-        name: form.name.value,
-        confirmed: form.confirmed.value,
-        numberOfGuests: form.numberOfGuests.value
-      };
+  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tabletop@1.6.0/tabletop.min.js"></script>
 
-      const res = await fetch('http://localhost:3000/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-
-      const text = await res.text();
-      document.getElementById('response').innerText = text;
-      form.reset();
-    });
-  </script>
 </body>
 </html>
