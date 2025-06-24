@@ -9,6 +9,7 @@ app.use(express.static(path.join(__dirname, '..'))); // מגיש את index.html
 
 app.post('/submit', (req, res) => {
   const data = req.body;
+  console.log('🟢 התקבלה בקשה:', data); // הדפסה לטרמינל
   const line = `${new Date().toISOString()}, ${data.name}, ${data.confirmed}, ${data.numberOfGuests}\n`;
 
   fs.appendFile('rsvps.csv', line, (err) => {
@@ -19,6 +20,12 @@ app.post('/submit', (req, res) => {
     res.send('תודה על אישורך!');
   });
 });
+
+// שליחה של guests.json ל-Frontend
+app.get('/api/guests', (req, res) => {
+  res.sendFile(path.join(__dirname, 'guests.json'));
+});
+
 
 app.listen(PORT, () => {
   console.log(`השרת רץ על http://localhost:${PORT}`);

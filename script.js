@@ -1,9 +1,4 @@
-// רשימת המוזמנים
-const guests = {
-  "0503306501": "נויה אוסי",
-  "0506787835": "בן נחום",
-  // הוסף כאן את שאר המוזמנים
-};
+
 
 // קבלת נתונים מה-URL
 const urlParams = new URLSearchParams(window.location.search);
@@ -17,11 +12,23 @@ const confirmedSelect = document.getElementById('confirmed');
 const guestsGroup = document.getElementById('guestsGroup');
 const numberOfGuestsInput = document.getElementById('numberOfGuests');
 
-// טעינת שם המוזמן אם יש ID
-if (guestId && guests[guestId]) {
-  nameInput.value = guests[guestId];
-  nameInput.readOnly = true;
+// טעינת שם מתוך קובץ guests.json
+async function loadGuestName() {
+  try {
+    const res = await fetch('/api/guests');
+    const guests = await res.json();
+
+    if (guestId && guests[guestId]) {
+      nameInput.value = guests[guestId];
+      nameInput.readOnly = true;
+    }
+  } catch (err) {
+    console.error('שגיאה בטעינת רשימת מוזמנים:', err);
+  }
 }
+
+// הפעלת טעינה
+loadGuestName();
 
 // הצגה/הסתרה של שדה כמות האנשים
 confirmedSelect.addEventListener('change', function() {
@@ -111,3 +118,4 @@ function resetFormButKeepName() {
   guestsGroup.style.display = 'none';
   numberOfGuestsInput.required = false;
 }
+
