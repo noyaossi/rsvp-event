@@ -12,20 +12,21 @@ const confirmedSelect = document.getElementById('confirmed');
 const guestsGroup = document.getElementById('guestsGroup');
 const numberOfGuestsInput = document.getElementById('numberOfGuests');
 
-// טעינת שם מתוך קובץ guests.json
 async function loadGuestName() {
-  try {
-    const res = await fetch('/api/guests');
-    const guests = await res.json();
+  if (!guestId) return;
 
-    if (guestId && guests[guestId]) {
-      nameInput.value = guests[guestId];
-      nameInput.readOnly = true;
-    }
+  try {
+    const res = await fetch(`/api/guest/${guestId}`);
+    if (!res.ok) throw new Error('מוזמן לא נמצא');
+
+    const data = await res.json();
+    nameInput.value = data.name;
+    nameInput.readOnly = true;
   } catch (err) {
-    console.error('שגיאה בטעינת רשימת מוזמנים:', err);
+    console.error('⚠️ שגיאה בטעינת שם המוזמן:', err);
   }
 }
+
 
 // הפעלת טעינה
 loadGuestName();

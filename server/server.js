@@ -21,10 +21,26 @@ app.post('/submit', (req, res) => {
   });
 });
 
-// שליחה של guests.json ל-Frontend
-app.get('/api/guests', (req, res) => {
-  res.sendFile(path.join(__dirname, 'guests.json'));
+app.get('/api/guest/:id', (req, res) => {
+  const guestId = req.params.id;
+
+  fs.readFile(path.join(__dirname, 'guests.json'), 'utf8', (err, data) => {
+    if (err) {
+      console.error('שגיאה בקריאת קובץ:', err);
+      return res.status(500).send('שגיאה בשרת');
+    }
+
+    const guests = JSON.parse(data);
+    const guest = guests[guestId];
+
+    if (guest) {
+      res.json({ name: guest.name });
+    } else {
+      res.status(404).json({ error: 'מוזמן לא נמצא' });
+    }
+  });
 });
+
 
 
 app.listen(PORT, () => {
