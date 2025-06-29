@@ -1,3 +1,4 @@
 node_modules
 .env
 rsvps.csv
+server/guests.json
